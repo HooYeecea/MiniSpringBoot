@@ -14,6 +14,10 @@
     <name>MiniBoot</name>
     <description>Minimal Spring Boot-style bootstrap on MiniIOC + MiniMVC + MiniTomcat</description>
 
+    <properties>
+        <exec.mainClass>com.miniboot.demo.MiniBootApplication</exec.mainClass>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.minitomcat</groupId>
@@ -29,7 +33,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.5.0</version>
                 <configuration>
-                    <mainClass>com.miniboot.demo.MiniBootApplication</mainClass>
+                    <mainClass>${exec.mainClass}</mainClass>
                 </configuration>
             </plugin>
         </plugins>

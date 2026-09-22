@@ -1,5 +1,7 @@
 package com.miniboot.annotation;
 
+import com.miniboot.server.ServerType;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -22,7 +24,17 @@ public @interface MiniSpringBootApplication {
      * Base packages to scan for {@code @MyComponent} beans.
      * Empty means: use the package of the primary source class.
      * <p>
-     * Step 1 supports a single package (first element if several are listed).
+     * Currently supports a single package (first element if several are listed).
      */
     String[] scanBasePackages() default {};
+
+    /**
+     * Embedded server implementation. Default {@link ServerType#BIO}.
+     */
+    ServerType server() default ServerType.BIO;
+
+    /**
+     * HTTP listen port.
+     */
+    int port() default 8080;
 }
