@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.minitomcat</groupId>
+        <artifactId>mini-spring</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>mini-mvc</artifactId>
+
+    <dependencies>
+        <!-- Shared Servlet/HTTP contracts; pick a Tomcat impl at runtime -->
+        <dependency>
+            <groupId>com.minitomcat</groupId>
+            <artifactId>mini-servlet-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- IoC + AOP -->
+        <dependency>
+            <groupId>com.minitomcat</groupId>
+            <artifactId>MiniIOCContainer</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Demo: BIO MiniTomcat -->
+        <dependency>
+            <groupId>com.minitomcat</groupId>
+            <artifactId>MiniTomcat</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Demo: NIO MiniTomcat -->
+        <dependency>
+            <groupId>com.minitomcat</groupId>
+            <artifactId>MiniTomcatNIO</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.17.2</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <mainClass>com.mvc.demo.MvcApplication</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
