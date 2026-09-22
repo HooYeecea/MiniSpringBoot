@@ -2,6 +2,7 @@ package com.miniboot.autoconfigure;
 
 import com.miniboot.annotation.MiniSpringBootApplication;
 import com.miniboot.server.EmbeddedServer;
+import com.miniboot.env.Environment;
 import com.miniioccontainer.context.MiniApplicationContext;
 import com.mvc.servlet.DispatcherServlet;
 
@@ -13,16 +14,20 @@ public final class AutoConfigurationContext {
     private final MiniApplicationContext applicationContext;
     private final MiniSpringBootApplication bootAnnotation;
     private final Class<?> primarySource;
+    private final Environment environment;
 
     private DispatcherServlet dispatcherServlet;
     private EmbeddedServer embeddedServer;
+    private ServerProperties serverProperties;
 
     public AutoConfigurationContext(MiniApplicationContext applicationContext,
                                     MiniSpringBootApplication bootAnnotation,
-                                    Class<?> primarySource) {
+                                    Class<?> primarySource,
+                                    Environment environment) {
         this.applicationContext = applicationContext;
         this.bootAnnotation = bootAnnotation;
         this.primarySource = primarySource;
+        this.environment = environment;
     }
 
     public MiniApplicationContext getApplicationContext() {
@@ -35,6 +40,10 @@ public final class AutoConfigurationContext {
 
     public Class<?> getPrimarySource() {
         return primarySource;
+    }
+
+    public Environment getEnvironment() {
+        return environment;
     }
 
     public DispatcherServlet getDispatcherServlet() {
@@ -51,5 +60,13 @@ public final class AutoConfigurationContext {
 
     public void setEmbeddedServer(EmbeddedServer embeddedServer) {
         this.embeddedServer = embeddedServer;
+    }
+
+    public ServerProperties getServerProperties() {
+        return serverProperties;
+    }
+
+    public void setServerProperties(ServerProperties serverProperties) {
+        this.serverProperties = serverProperties;
     }
 }

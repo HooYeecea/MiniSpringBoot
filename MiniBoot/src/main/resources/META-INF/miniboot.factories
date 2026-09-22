@@ -1,4 +1,5 @@
-# MiniBoot auto-configurations (order matters: MVC before embedded server)
+# MiniBoot auto-configurations (order matters)
 com.miniboot.autoconfigure.AutoConfiguration=\
+com.miniboot.autoconfigure.ConfigurationPropertiesAutoConfiguration,\
 com.miniboot.autoconfigure.DispatcherServletAutoConfiguration,\
 com.miniboot.autoconfigure.EmbeddedServerAutoConfiguration
