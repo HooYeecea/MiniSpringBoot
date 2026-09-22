@@ -22,5 +22,7 @@
         <module>MiniIOCContainer</module>
         <module>MiniMVC</module>
         <module>MiniBoot</module>
+        <module>MiniBootStarterWeb</module>
+        <module>MiniBootDemo</module>
     </modules>
 </project>

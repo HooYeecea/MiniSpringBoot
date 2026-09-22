@@ -10,14 +10,17 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mini-boot</artifactId>
-    <name>MiniBoot</name>
-    <description>Minimal Spring Boot-style core: run, auto-config, Environment, embedded server SPI</description>
+    <artifactId>mini-boot-starter-web</artifactId>
+    <name>MiniBoot Starter Web</name>
+    <description>
+        Starter for MiniBoot web apps: pulls MiniBoot + MiniMVC + MiniTomcat (BIO/NIO) + Jackson.
+        Depend on this artifact alone to build a web application.
+    </description>
 
     <dependencies>
         <dependency>
             <groupId>com.minitomcat</groupId>
-            <artifactId>mini-mvc</artifactId>
+            <artifactId>mini-boot</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

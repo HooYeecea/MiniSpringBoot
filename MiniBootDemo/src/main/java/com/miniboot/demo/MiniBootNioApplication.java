@@ -7,7 +7,7 @@ import com.miniboot.server.ServerType;
 /**
  * Boot demo on NIO MiniTomcat.
  * <p>
- * Run: {@code mvn -f MiniBoot/pom.xml exec:java -Dexec.mainClass=com.miniboot.demo.MiniBootNioApplication}
+ * Run: {@code mvn -f MiniBootDemo/pom.xml exec:java -Dexec.mainClass=com.miniboot.demo.MiniBootNioApplication}
  */
 @MiniSpringBootApplication(scanBasePackages = "com.mvc.demo", server = ServerType.NIO, port = 8080)
 public class MiniBootNioApplication {
