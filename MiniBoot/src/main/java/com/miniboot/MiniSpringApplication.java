@@ -1,13 +1,17 @@
 package com.miniboot;
 
+import com.miniboot.annotation.EnableAutoConfiguration;
 import com.miniboot.annotation.MiniSpringBootApplication;
+import com.miniboot.autoconfigure.AutoConfiguration;
+import com.miniboot.autoconfigure.AutoConfigurationContext;
+import com.miniboot.autoconfigure.AutoConfigurationLoader;
 import com.miniboot.server.EmbeddedServer;
-import com.miniboot.server.EmbeddedServerFactory;
 import com.miniioccontainer.context.MiniApplicationContext;
-import com.mvc.servlet.DispatcherServlet;
+
+import java.util.List;
 
 /**
- * Boot-style entry: create IoC context, mount {@link DispatcherServlet}, start an embedded server.
+ * Boot-style entry: create IoC context, apply auto-configurations, start embedded server.
  * <p>
  * Usage:
  * <pre>{@code
@@ -42,21 +46,32 @@ public final class MiniSpringApplication {
         }
 
         String scanPackage = resolveScanPackage(primarySource, boot);
-        int port = boot.port();
         System.out.println("[MiniBoot] Starting " + primarySource.getSimpleName());
         System.out.println("[MiniBoot] Scanning package: " + scanPackage);
-        System.out.println("[MiniBoot] Server: " + boot.server() + " port=" + port);
+        System.out.println("[MiniBoot] Server: " + boot.server() + " port=" + boot.port());
 
-        MiniApplicationContext context = new MiniApplicationContext(scanPackage);
-        DispatcherServlet dispatcherServlet = new DispatcherServlet(context);
-        dispatcherServlet.init();
+        MiniApplicationContext applicationContext = new MiniApplicationContext(scanPackage);
+        AutoConfigurationContext autoContext =
+                new AutoConfigurationContext(applicationContext, boot, primarySource);
 
-        EmbeddedServer server = EmbeddedServerFactory.create(boot.server(), port);
-        server.registerServlet("/*", dispatcherServlet);
+        if (isAutoConfigurationEnabled(primarySource)) {
+            List<AutoConfiguration> configurations = AutoConfigurationLoader.load();
+            for (AutoConfiguration configuration : configurations) {
+                configuration.configure(autoContext);
+            }
+        } else {
+            System.out.println("[MiniBoot] @EnableAutoConfiguration not present; skip auto-config");
+        }
 
-        System.out.println("[MiniBoot] DispatcherServlet mapped to /*");
-        System.out.println("[MiniBoot] Try: http://localhost:" + port + "/mvc/hello");
-        System.out.println("[MiniBoot] Try: http://localhost:" + port + "/api/ping");
+        EmbeddedServer server = autoContext.getEmbeddedServer();
+        if (server == null) {
+            throw new IllegalStateException(
+                    "No EmbeddedServer was auto-configured; check META-INF/miniboot.factories "
+                            + "and classpath (mini-mvc / MiniTomcat)");
+        }
+
+        System.out.println("[MiniBoot] Try: http://localhost:" + boot.port() + "/mvc/hello");
+        System.out.println("[MiniBoot] Try: http://localhost:" + boot.port() + "/api/ping");
 
         try {
             server.start();
@@ -64,7 +79,16 @@ public final class MiniSpringApplication {
             server.stop();
             throw new IllegalStateException("Failed to start embedded server (" + boot.server() + ")", e);
         }
-        return context;
+        return applicationContext;
+    }
+
+    private static boolean isAutoConfigurationEnabled(Class<?> primarySource) {
+        if (primarySource.isAnnotationPresent(EnableAutoConfiguration.class)) {
+            return true;
+        }
+        // @MiniSpringBootApplication is meta-annotated with @EnableAutoConfiguration
+        return primarySource.isAnnotationPresent(MiniSpringBootApplication.class)
+                && MiniSpringBootApplication.class.isAnnotationPresent(EnableAutoConfiguration.class);
     }
 
     private static String resolveScanPackage(Class<?> primarySource, MiniSpringBootApplication boot) {

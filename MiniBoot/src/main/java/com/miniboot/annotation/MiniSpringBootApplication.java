@@ -14,10 +14,14 @@ import java.lang.annotation.Target;
  * Component scan defaults to the package of the annotated class (and below).
  * Override with {@link #scanBasePackages()} when the main class lives outside
  * the application bean packages (e.g. boot demo scanning {@code com.mvc.demo}).
+ * <p>
+ * Meta-annotated with {@link EnableAutoConfiguration} so Web / embedded-server
+ * wiring is loaded from {@code META-INF/miniboot.factories}.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@EnableAutoConfiguration
 public @interface MiniSpringBootApplication {
 
     /**
